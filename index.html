@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nested Set Tree Viewer</title>
+
+  <link rel="stylesheet" href="styles.css" />
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script src="tree.js" defer></script>
+</head>
+
+<body>
+  <header>
+    <div class="title-wrap">
+      <h1>Nested Set Tree Viewer</h1>
+      <div class="subtitle">
+        Nested sets model visualization
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <button id="fitBtn" type="button">Fit</button>
+      <button id="layoutBtn" type="button">Reset layout</button>
+      <button id="openModalBtn" class="primary" type="button">
+        Paste JSON
+      </button>
+    </div>
+  </header>
+
+  <main id="treeContainer">
+    <svg id="treeSvg">
+      <defs>
+        <marker
+          id="arrowhead"
+          markerWidth="8"
+          markerHeight="8"
+          refX="7"
+          refY="4"
+          orient="auto"
+          markerUnits="strokeWidth"
+        >
+          <path d="M 0 0 L 8 4 L 0 8 z"></path>
+        </marker>
+      </defs>
+
+      <g id="treeViewport"></g>
+    </svg>
+  </main>
+
+  <div id="emptyState" class="empty-state">
+    <div class="empty-card">
+      <strong>No tree loaded</strong>
+      Click <b>Paste JSON</b>, paste your data, then click <b>Build tree</b>.
+    </div>
+  </div>
+
+  <div id="stats" class="stats"></div>
+
+  <div
+    id="modalBackdrop"
+    class="modal-backdrop"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modalTitle"
+  >
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="modalTitle">Paste JSON data</h2>
+
+        <p>
+          Parent field can be <code>parent_id</code> or <code>parentId</code>.
+          The first item may omit the parent field and will be treated as root.
+          Nested-set aliases:
+          <code>rgt</code>/<code>rght</code>,
+          <code>lvl</code>/<code>level</code>.
+        </p>
+      </div>
+
+      <div class="modal-body">
+        <textarea id="jsonInput" spellcheck="false">[
+  {
+    "id": 1,
+    "parent_id": null,
+    "name": "Node 1",
+    "lft": 1,
+    "rght": 12,
+    "level": 0
+  },
+  {
+    "id": 2,
+    "parent_id": 1,
+    "name": "Node 2",
+    "lft": 2,
+    "rght": 7,
+    "level": 1
+  },
+  {
+    "id": 3,
+    "parent_id": 2,
+    "name": "Node 3",
+    "lft": 3,
+    "rght": 4,
+    "level": 2
+  },
+  {
+    "id": 4,
+    "parent_id": 2,
+    "name": "Node 4",
+    "lft": 5,
+    "rght": 6,
+    "level": 2
+  },
+  {
+    "id": 5,
+    "parent_id": 1,
+    "name": "Node 5",
+    "lft": 8,
+    "rght": 11,
+    "level": 1
+  },
+  {
+    "id": 6,
+    "parent_id": 5,
+    "name": "Node 6",
+    "lft": 9,
+    "rght": 10,
+    "level": 2
+  }
+]</textarea>
+
+        <div id="errorBox" class="error"></div>
+      </div>
+
+      <div class="modal-footer">
+        <button id="cancelBtn" type="button">Cancel</button>
+        <button id="buildBtn" class="primary" type="button">
+          Build tree
+        </button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
