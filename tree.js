@@ -71,6 +71,20 @@ function getParentId(item, index = -1) {
   return undefined;
 }
 
+function setParentId(item, value) {
+  if (hasOwn(item, "parent_id")) {
+    item.parent_id = value;
+    return;
+  }
+
+  if (hasOwn(item, "parentId")) {
+    item.parentId = value;
+    return;
+  }
+
+  item.parent_id = value;
+}
+
 function getRight(item) {
   if (hasOwn(item, "rgt")) {
     return item.rgt;
@@ -124,20 +138,28 @@ function parseInput() {
 }
 
 function normalizeInput(parsed) {
-  if (Array.isArray(parsed)) {
-    return parsed;
-  }
+  let data;
 
-  if (
+  if (Array.isArray(parsed)) {
+    data = parsed;
+  } else if (
     parsed &&
     Array.isArray(parsed.organizations)
   ) {
-    return parsed.organizations;
+    data = parsed.organizations;
+  } else {
+    throw new Error(
+      'JSON must be an array or an object containing an "organizations" array.',
+    );
   }
 
-  throw new Error(
-    'JSON must be an array or an object containing an "organizations" array.',
-  );
+  /*
+   * Work on copies so normalization does not mutate the parsed
+   * source objects unexpectedly.
+   */
+  return data.map((item) => ({
+    ...item,
+  }));
 }
 
 function validateData(data) {
@@ -159,6 +181,15 @@ function validateData(data) {
     ids.add(id);
   });
 
+  /*
+   * The first node represents the root of the imported tree.
+   *
+   * It may originally belong to some parent outside this exported
+   * dataset. If that parent does not exist in the supplied data,
+   * treat this node as the root by replacing its parent with null.
+   */
+  normalizeTopLevelParent(data, ids);
+
   data.forEach((item, index) => {
     validateParentReference(
       item,
@@ -166,6 +197,29 @@ function validateData(data) {
       ids,
     );
   });
+}
+
+function normalizeTopLevelParent(
+  data,
+  ids,
+) {
+  const root = data[0];
+
+  const parentId = getParentId(
+    root,
+    0,
+  );
+
+  if (
+    parentId === null ||
+    parentId === undefined
+  ) {
+    return;
+  }
+
+  if (!ids.has(String(parentId))) {
+    setParentId(root, null);
+  }
 }
 
 function validateNodeShape(item, index) {
