@@ -15,17 +15,43 @@
   <header>
     <div class="title-wrap">
       <h1>Nested Set Tree Viewer</h1>
+
       <div class="subtitle">
         Nested sets model visualization
       </div>
     </div>
 
     <div class="toolbar">
-      <button id="fitBtn" type="button">Fit</button>
-      <button id="layoutBtn" type="button">Reset layout</button>
-      <button id="openModalBtn" class="primary" type="button">
+      <button id="fitBtn" type="button">
+        Fit
+      </button>
+
+      <button id="layoutBtn" type="button">
+        Reset layout
+      </button>
+
+      <button id="extensionsBtn" type="button">
+        Add extensions
+      </button>
+
+      <button id="openFileBtn" type="button">
+        Open JSON file
+      </button>
+
+      <button
+        id="openModalBtn"
+        class="primary"
+        type="button"
+      >
         Paste JSON
       </button>
+
+      <input
+        id="fileInput"
+        type="file"
+        accept=".json,application/json"
+        hidden
+      />
     </div>
   </header>
 
@@ -52,7 +78,9 @@
   <div id="emptyState" class="empty-state">
     <div class="empty-card">
       <strong>No tree loaded</strong>
-      Click <b>Paste JSON</b>, paste your data, then click <b>Build tree</b>.
+
+      Click <b>Paste JSON</b> or
+      <b>Open JSON file</b> to load a tree.
     </div>
   </div>
 
@@ -67,75 +95,40 @@
   >
     <div class="modal">
       <div class="modal-header">
-        <h2 id="modalTitle">Paste JSON data</h2>
+        <h2 id="modalTitle">
+          Paste JSON data
+        </h2>
 
-        <p>
-          Parent field can be <code>parent_id</code> or <code>parentId</code>.
-          The first item may omit the parent field and will be treated as root.
-          Nested-set aliases:
-          <code>rgt</code>/<code>rght</code>,
-          <code>lvl</code>/<code>level</code>.
+        <p id="modalDescription">
+          Paste tree JSON.
         </p>
       </div>
 
       <div class="modal-body">
-        <textarea id="jsonInput" spellcheck="false">[
-  {
-    "id": 1,
-    "parent_id": null,
-    "name": "Node 1",
-    "lft": 1,
-    "rght": 12,
-    "level": 0
-  },
-  {
-    "id": 2,
-    "parent_id": 1,
-    "name": "Node 2",
-    "lft": 2,
-    "rght": 7,
-    "level": 1
-  },
-  {
-    "id": 3,
-    "parent_id": 2,
-    "name": "Node 3",
-    "lft": 3,
-    "rght": 4,
-    "level": 2
-  },
-  {
-    "id": 4,
-    "parent_id": 2,
-    "name": "Node 4",
-    "lft": 5,
-    "rght": 6,
-    "level": 2
-  },
-  {
-    "id": 5,
-    "parent_id": 1,
-    "name": "Node 5",
-    "lft": 8,
-    "rght": 11,
-    "level": 1
-  },
-  {
-    "id": 6,
-    "parent_id": 5,
-    "name": "Node 6",
-    "lft": 9,
-    "rght": 10,
-    "level": 2
-  }
-]</textarea>
+        <textarea
+          id="jsonInput"
+          spellcheck="false"
+        ></textarea>
 
-        <div id="errorBox" class="error"></div>
+        <div
+          id="errorBox"
+          class="error"
+        ></div>
       </div>
 
       <div class="modal-footer">
-        <button id="cancelBtn" type="button">Cancel</button>
-        <button id="buildBtn" class="primary" type="button">
+        <button
+          id="cancelBtn"
+          type="button"
+        >
+          Cancel
+        </button>
+
+        <button
+          id="buildBtn"
+          class="primary"
+          type="button"
+        >
           Build tree
         </button>
       </div>

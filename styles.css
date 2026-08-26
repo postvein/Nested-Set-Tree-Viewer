@@ -27,15 +27,15 @@ body {
 }
 
 header {
-  height: 64px;
-  flex: 0 0 64px;
+  min-height: 64px;
+  flex: 0 0 auto;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 
   gap: 16px;
-  padding: 0 20px;
+  padding: 10px 20px;
 
   background: white;
   border-bottom: 1px solid #e5e7eb;
@@ -49,18 +49,24 @@ header {
 
 h1 {
   margin: 0;
+
   font-size: 18px;
   font-weight: 700;
 }
 
 .subtitle {
   margin-top: 3px;
+
   font-size: 12px;
   color: #6b7280;
 }
 
 .toolbar {
   display: flex;
+  flex-wrap: wrap;
+
+  justify-content: flex-end;
+
   gap: 8px;
 }
 
@@ -162,9 +168,10 @@ button.primary:hover {
   rx: 12;
   ry: 12;
 
-  filter: drop-shadow(
-    0 3px 6px rgba(15, 23, 42, 0.08)
-  );
+  filter:
+    drop-shadow(
+      0 3px 6px rgba(15, 23, 42, 0.08)
+    );
 
   cursor: move;
 }
@@ -172,18 +179,20 @@ button.primary:hover {
 .tree-node:hover .node-card {
   stroke: #64748b;
 
-  filter: drop-shadow(
-    0 5px 10px rgba(15, 23, 42, 0.13)
-  );
+  filter:
+    drop-shadow(
+      0 5px 10px rgba(15, 23, 42, 0.13)
+    );
 }
 
 .tree-node.selected .node-card {
   stroke: #2563eb;
   stroke-width: 2.5;
 
-  filter: drop-shadow(
-    0 5px 12px rgba(37, 99, 235, 0.2)
-  );
+  filter:
+    drop-shadow(
+      0 5px 12px rgba(37, 99, 235, 0.2)
+    );
 }
 
 .tree-node.root .node-card {
@@ -199,6 +208,7 @@ button.primary:hover {
   text-anchor: middle;
 
   cursor: text;
+
   user-select: text;
   -webkit-user-select: text;
 }
@@ -217,6 +227,7 @@ button.primary:hover {
   text-anchor: middle;
 
   cursor: text;
+
   user-select: text;
   -webkit-user-select: text;
 }
@@ -227,11 +238,52 @@ button.primary:hover {
 }
 
 /* -------------------------
+   NODE EXTENSIONS
+   ------------------------- */
+
+.node-extensions {
+  pointer-events: all;
+}
+
+.node-extension-card {
+  fill: #f1f5f9;
+
+  stroke: #cbd5e1;
+  stroke-width: 1;
+
+  rx: 7;
+  ry: 7;
+}
+
+.node-extension-text {
+  fill: #475569;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  font-family:
+    "SFMono-Regular",
+    Consolas,
+    "Liberation Mono",
+    monospace;
+
+  text-anchor: middle;
+
+  dominant-baseline: middle;
+
+  cursor: text;
+
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+/* -------------------------
    EMPTY STATE
    ------------------------- */
 
 .empty-state {
   position: fixed;
+
   inset: 64px 0 0 0;
 
   pointer-events: none;
@@ -322,7 +374,12 @@ button.primary:hover {
 
 .modal {
   width: min(900px, 100%);
-  max-height: min(760px, calc(100vh - 40px));
+
+  max-height:
+    min(
+      760px,
+      calc(100vh - 40px)
+    );
 
   display: flex;
   flex-direction: column;
@@ -345,6 +402,7 @@ button.primary:hover {
 
 .modal-header h2 {
   margin: 0;
+
   font-size: 18px;
 }
 
@@ -355,6 +413,16 @@ button.primary:hover {
 
   font-size: 13px;
   line-height: 1.5;
+}
+
+.modal-header code {
+  padding: 1px 4px;
+
+  background: #f1f5f9;
+
+  border-radius: 4px;
+
+  color: #334155;
 }
 
 .modal-body {
@@ -431,21 +499,26 @@ textarea:focus {
   border-top: 1px solid #e5e7eb;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 900px) {
   header {
-    height: auto;
-    min-height: 64px;
-
     align-items: flex-start;
     flex-direction: column;
 
     padding: 12px;
   }
 
-  .empty-state {
-    inset: 104px 0 0 0;
+  .toolbar {
+    width: 100%;
+
+    justify-content: flex-start;
   }
 
+  .empty-state {
+    inset: 120px 0 0 0;
+  }
+}
+
+@media (max-width: 700px) {
   textarea {
     min-height: 320px;
   }
